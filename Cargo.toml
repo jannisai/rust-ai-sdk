@@ -1,0 +1,70 @@
+[package]
+name = "rust-ai-sdk"
+version = "0.1.0"
+edition = "2021"
+description = "High-performance streaming LLM client with zero-copy parsing and usage tracking"
+license = "MIT OR Apache-2.0"
+
+[features]
+default = []
+simd-json = ["dep:simd-json"]
+
+[dependencies]
+# HTTP client
+reqwest = { version = "0.12", default-features = false, features = ["stream", "json", "rustls-tls", "gzip"] }
+
+# Async runtime
+tokio = { version = "1", features = ["rt", "time", "sync"] }
+futures = "0.3"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+simd-json = { version = "0.14", optional = true }
+
+# Zero-copy bytes
+bytes = "1"
+memchr = "2"
+
+# Error handling
+thiserror = "2"
+
+# Utilities
+pin-project-lite = "0.2"
+smallvec = { version = "1", features = ["union"] }
+fastrand = "2"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process"] }
+anyhow = "1"
+wiremock = "0.6"
+tokenipsum = { git = "https://github.com/jannisai/tokenipsum.git" }
+axum = "0.8"
+
+[lints.rust]
+unsafe_code = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Ergonomics
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+wildcard_imports = "allow"
+redundant_pub_crate = "allow"
+return_self_not_must_use = "allow"
+# Style preferences
+use_self = "allow"
+missing_const_for_fn = "allow"
+doc_markdown = "allow"
+unnecessary_wraps = "allow"
+option_if_let_else = "allow"
+match_same_arms = "allow"
+uninlined_format_args = "allow"
+unused_self = "allow"
+struct_field_names = "allow"
+assigning_clones = "allow"
+manual_let_else = "allow"
+single_match_else = "allow"

@@ -4,8 +4,8 @@
 
 use rust_ai_sdk::{Client, ClientBuilder, Message};
 use std::net::SocketAddr;
-use tokio::net::TcpListener;
 use tokenipsum::{create_router, Config, RuntimeState};
+use tokio::net::TcpListener;
 
 /// Start a TokenIpsum mock server on a random available port.
 async fn start_mock_server() -> (SocketAddr, tokio::task::JoinHandle<()>) {

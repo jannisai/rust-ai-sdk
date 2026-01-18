@@ -434,10 +434,7 @@ enum ContentBlock {
         input: Value,
     },
     #[serde(rename = "thinking")]
-    Thinking {
-        thinking: String,
-        signature: String,
-    },
+    Thinking { thinking: String, signature: String },
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -490,7 +487,11 @@ enum StreamContentBlock {
     #[serde(rename = "text")]
     Text { text: String },
     #[serde(rename = "tool_use")]
-    ToolUse { id: String, name: String, input: Value },
+    ToolUse {
+        id: String,
+        name: String,
+        input: Value,
+    },
     #[serde(rename = "thinking")]
     Thinking { thinking: String, signature: String },
 }
@@ -577,7 +578,8 @@ mod tests {
         let mut parser = ClaudeParser::new();
 
         // message_start
-        let start = r#"{"type":"message_start","message":{"usage":{"input_tokens":10,"output_tokens":1}}}"#;
+        let start =
+            r#"{"type":"message_start","message":{"usage":{"input_tokens":10,"output_tokens":1}}}"#;
         parser.parse_chunk(start).unwrap();
 
         // content_block_start
@@ -596,7 +598,8 @@ mod tests {
         let mut parser = ClaudeParser::new();
 
         // message_start
-        let start = r#"{"type":"message_start","message":{"usage":{"input_tokens":10,"output_tokens":1}}}"#;
+        let start =
+            r#"{"type":"message_start","message":{"usage":{"input_tokens":10,"output_tokens":1}}}"#;
         parser.parse_chunk(start).unwrap();
 
         // content_block_start for tool_use

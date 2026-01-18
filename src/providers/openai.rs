@@ -494,10 +494,7 @@ enum StreamOutputItem {
     #[serde(rename = "message")]
     Message {},
     #[serde(rename = "function_call")]
-    FunctionCall {
-        call_id: String,
-        name: String,
-    },
+    FunctionCall { call_id: String, name: String },
 }
 
 #[derive(Debug, Deserialize)]

@@ -59,13 +59,13 @@ impl ModelPricing {
         let input_cost = (f64::from(usage.input_tokens) / 1_000_000.0) * self.input_per_million;
         let output_cost = (f64::from(usage.output_tokens) / 1_000_000.0) * self.output_per_million;
 
-        let cache_read_cost = self
-            .cache_read_per_million
-            .map_or(0.0, |rate| (f64::from(usage.cache_read_input_tokens) / 1_000_000.0) * rate);
+        let cache_read_cost = self.cache_read_per_million.map_or(0.0, |rate| {
+            (f64::from(usage.cache_read_input_tokens) / 1_000_000.0) * rate
+        });
 
-        let cache_write_cost = self
-            .cache_write_per_million
-            .map_or(0.0, |rate| (f64::from(usage.cache_creation_input_tokens) / 1_000_000.0) * rate);
+        let cache_write_cost = self.cache_write_per_million.map_or(0.0, |rate| {
+            (f64::from(usage.cache_creation_input_tokens) / 1_000_000.0) * rate
+        });
 
         Cost {
             input_cost,

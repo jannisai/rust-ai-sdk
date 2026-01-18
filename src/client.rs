@@ -183,7 +183,9 @@ impl Client {
 
     /// Get custom base URL for a provider, if configured.
     fn get_base_url(&self, provider: &str) -> Option<&str> {
-        self.base_urls.get(provider).map(std::string::String::as_str)
+        self.base_urls
+            .get(provider)
+            .map(std::string::String::as_str)
     }
 
     /// Execute a streaming request with retry.
@@ -447,9 +449,10 @@ impl RequestBuilder<'_> {
     > {
         let model_id = ModelId::parse(&self.model)?;
         let base_url = self.client.get_base_url(&model_id.provider);
-        let provider = get_provider_with_base_url(&model_id.provider, base_url).ok_or_else(|| {
-            Error::InvalidModel(format!("unknown provider: {}", model_id.provider))
-        })?;
+        let provider =
+            get_provider_with_base_url(&model_id.provider, base_url).ok_or_else(|| {
+                Error::InvalidModel(format!("unknown provider: {}", model_id.provider))
+            })?;
         let api_key = self.client.get_api_key(&model_id.provider)?;
 
         if self.streaming {
@@ -470,9 +473,10 @@ impl RequestBuilder<'_> {
     pub async fn send_complete(self) -> Result<CompletionResult, Error> {
         let model_id = ModelId::parse(&self.model)?;
         let base_url = self.client.get_base_url(&model_id.provider);
-        let provider = get_provider_with_base_url(&model_id.provider, base_url).ok_or_else(|| {
-            Error::InvalidModel(format!("unknown provider: {}", model_id.provider))
-        })?;
+        let provider =
+            get_provider_with_base_url(&model_id.provider, base_url).ok_or_else(|| {
+                Error::InvalidModel(format!("unknown provider: {}", model_id.provider))
+            })?;
         let api_key = self.client.get_api_key(&model_id.provider)?;
 
         let body = provider.build_complete_body(&model_id.model, self.messages, &self.config)?;

@@ -358,7 +358,9 @@ impl ProviderParser for GeminiParser {
             });
         }
 
-        let candidate = if let Some(c) = chunk.candidates.first() { c } else {
+        let candidate = if let Some(c) = chunk.candidates.first() {
+            c
+        } else {
             // Usage-only chunk
             if let Some(usage) = self.last_usage.clone() {
                 return Ok(Some(StreamChunk::usage(usage)));

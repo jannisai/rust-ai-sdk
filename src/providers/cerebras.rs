@@ -184,29 +184,16 @@ impl CerebrasProvider {
 
 /// Streaming response parser for Cerebras.
 pub struct CerebrasParser {
-    /// Scratch buffer for JSON parsing to avoid allocations.
-    #[cfg(feature = "simd-json")]
-    scratch: Vec<u8>,
+    // Empty struct - state tracked externally
 }
 
 impl CerebrasParser {
     pub fn new() -> Self {
-        Self {
-            #[cfg(feature = "simd-json")]
-            scratch: Vec::with_capacity(4096),
-        }
+        Self {}
     }
 
-    /// Parse a streaming chunk using zero-copy where possible.
+    /// Parse a streaming chunk.
     fn parse_chunk_inner(&mut self, data: &str) -> Result<Option<StreamChunk>, Error> {
-        // Fast path: parse JSON
-        #[cfg(feature = "simd-json")]
-        let chunk: CerebrasStreamChunk = {
-            let mut data_bytes = data.as_bytes().to_vec();
-            simd_json::from_slice(&mut data_bytes).map_err(|e| Error::parse(e.to_string()))?
-        };
-
-        #[cfg(not(feature = "simd-json"))]
         let chunk: CerebrasStreamChunk =
             serde_json::from_str(data).map_err(|e| Error::parse(e.to_string()))?;
 
